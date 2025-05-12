@@ -1,0 +1,226 @@
+body {
+  font-family: sans-serif;
+  background: #FBF5EB;
+  margin: 0;
+  padding: 20px;
+}
+
+.app-container {
+  max-width: 500px;
+  width: 100%;
+  margin: auto;
+  padding: 10px;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  margin-bottom: 20px;
+  color: #383f40;
+  text-decoration: underline #e68900;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 10px;
+  justify-content: space-around;
+}
+
+.top-bar {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px auto;
+}
+
+.difficulty .timer {
+font-size: clamp(0.9rem, 4vw, 1rem);
+  color: #333;
+}
+
+/* ====== SUDOKU GRID ====== */
+.sudoku-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  width: 90vw;
+  max-width: 450px;
+  margin: auto auto 20px;
+  border: 6px solid #000;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  font-size: clamp(1rem, 4vw, 2.4rem);
+  font-weight: bold;
+  color: #333;
+  border: 1px solid #ccc;
+  text-align: center;
+  box-sizing: border-box;
+  caret-color: transparent;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell:focus {
+  outline: none;
+  background-color: #f0be72 !important;
+}
+
+.cell.conflict {
+  background-color: #ffe6e6;
+}
+
+.cell.conflict::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  background-color: rgb(247, 58, 58);
+  border-radius: 50%;
+}
+
+.highlight {
+  background-color: #ffe9c4 !important;
+}
+
+.fixed {
+  background-color: #e9e8e8;
+}
+
+.b-border {
+  border-bottom: 4px solid #b0adad;
+}
+
+.r-border {
+  border-right: 4px solid #b0adad;
+}
+
+/* ====== BUTTON BASE STYLES ====== */
+button {
+  padding:8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: medium;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:hover {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific button types */
+.refresh-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.refresh-button:hover {
+  background-color: #0056b3;
+}
+
+.resume-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.resume-button:hover {
+  background-color: #e68900;
+}
+
+.undo-button {
+  background-color: #ffc107;
+  color: black;
+}
+
+.undo-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ====== CANDIDATES ====== */
+.candidates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 100%;
+  height: 100%;
+  font-size: 0.7rem;
+  font-weight: 100;
+  color: #666;
+  align-items: center;
+  justify-items: center;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.candidate,
+.inactive-candidate {
+  width: 100%;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.candidate.marked,
+.inactive-candidate.marked {
+  opacity: 1;
+}
+
+.candidate:hover {
+  border-radius: 2px;
+  opacity: 1;
+}
+
+/* ====== OTHERS ====== */
+.result-message {
+  font-size: 16px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.timer {
+  font-size: large;
+  padding: 4px;
+  border-bottom: 2px solid #e68900;
+}
+
+@media (max-width: 480px) {
+
+  .cell {
+    font-size: clamp(1rem, 4vw, 1.6rem);
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}
