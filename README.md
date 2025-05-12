@@ -46,7 +46,7 @@ Run the following command to start the app locally:
 npm run dev
 ```
 
-Your app should now be running at `http://localhost:3000`.
+Your app should now be running at `http://localhost:5173`.
 
 ## How to Play
 
