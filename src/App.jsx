@@ -16,13 +16,13 @@ const App = () => {
   const [userGrid, setUserGrid] = useState([]);
   const [conflicts, setConflicts] = useState(new Set());
   const [focusedCell, setFocusedCell] = useState(null);
-  const [hoveredCell, setHoveredCell] = useState(null);
   const [relatedCells, setRelatedCells] = useState(new Set());
   const [seconds, setSeconds] = useState(0);
   const [paused, setPaused] = useState(false);
   const [history, setHistory] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
   const [resetGameModal, setResetGameModal] = useState(false)
+  const [error, setError] = useState('')
 
   const { width, height } = useWindowSize()
 
@@ -41,7 +41,6 @@ const App = () => {
       setIsCompleted(false)
     }
   }, [puzzle]);
-  console.log(userGrid);
 
 
 
@@ -51,10 +50,20 @@ const App = () => {
     const isSolved = userGrid.every((row, i) =>
       row.every((cell, j) => cell.value === solution[i][j])
     );
+    console.log(userGrid);
+
+    const isFullyFilled = userGrid.every(row =>
+      row.every(cell => cell.value !== 0)
+    );
+
+    const hasConflicts = conflicts.size > 0;
+
 
     if (isSolved) {
       setPaused(true);
       setIsCompleted(true);
+    } else if (isFullyFilled && !hasConflicts && focusedCell) {
+      setError('Your solution does not match with the provided solution')
     }
   }, [userGrid, solution]);
 
@@ -129,6 +138,7 @@ const App = () => {
 
   const regenerateNewPuzzle = () => {
     setConflicts(new Set())
+    setIsCompleted(false)
     regeneratePuzzle();
   }
   const formatTime = (s) => {
@@ -168,14 +178,11 @@ const App = () => {
       <SudokuGrid
         puzzle={userGrid}
         original={puzzle}
-        onCellChange={updateCell}
         onToggleCandidate={toggleCandidate}
         conflicts={conflicts}
         onFocusCell={onFocusCell}
         focusedCell={focusedCell}
         relatedCells={relatedCells}
-        hoveredCell={hoveredCell}
-        setHoveredCell={setHoveredCell}
       />
       <div className='buttons-container'>
         <Button onClick={() => setPaused(true)} text="Pause" />
@@ -183,6 +190,9 @@ const App = () => {
         <Button onClick={regenerateNewPuzzle} text="New Puzzle" />
         <Button onClick={handleUndo} disabled={!history.length} text="Undo" />
       </div>
+      {error.length > 0 && (
+        <p className='error'>{error}</p>
+      )}
 
       {paused && (
         <Modal show title="Your game has been paused" onClose={() => setPaused(false)}>
@@ -199,7 +209,7 @@ const App = () => {
           width={width}
           height={height}
         />}>
-          <paused>You finished an <strong>{difficulty}</strong></paused>
+          <p>You finished a(n) <strong>{difficulty}</strong></p>
           <p>
             puzzle in <strong>{formatTime(seconds)}</strong>
           </p>

@@ -3,14 +3,11 @@ import React from 'react';
 const SudokuGrid = ({
     puzzle,
     original,
-    onCellChange,
     onToggleCandidate,
     conflicts,
     onFocusCell,
     focusedCell,
     relatedCells,
-    hoveredCell,
-    setHoveredCell,
 }) => {
     return (
         <div className="sudoku-grid">
@@ -20,7 +17,6 @@ const SudokuGrid = ({
                     const isConflict = conflicts.has(`${i}-${j}`);
                     const isRelated = relatedCells.has(`${i}-${j}`);
                     const isFocused = focusedCell?.row === i && focusedCell?.col === j;
-                    const isHovered = hoveredCell?.row === i && hoveredCell?.col === j;
                     const { value, candidates = [] } = cell;
                     return (
                         <div
@@ -37,12 +33,6 @@ const SudokuGrid = ({
               `}
                             onClick={() => {
                                 if (!isFixed) onFocusCell(i, j);
-                            }}
-                            onMouseEnter={() => {
-                                if (!isFixed && value === 0) setHoveredCell({ row: i, col: j });
-                            }}
-                            onMouseLeave={() => {
-                                setHoveredCell(null);
                             }}
                         >
                             {value !== 0 ? (
